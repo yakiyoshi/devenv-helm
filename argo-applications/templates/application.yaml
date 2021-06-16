@@ -1,20 +1,22 @@
-{{- range .Values.project -}}
+{{- range $i, $name := .Values.project -}}
+{{- if ne $i 0}}
 ---
+{{- end }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .name }}
+  name: {{ $name }}
   namespace: openshift-gitops
 spec:
   destination:
-    namespace: {{ .name }}
+    namespace: {{ $name }}
     server: https://kubernetes.default.svc
   project: default
   source:
     helm:
       valueFiles:
       - values.yaml
-    path: {{ .name }}
+    path: {{ $name }}
     repoURL: {{ $.Values.repoURL }}
     targetRevision: main
   syncPolicy:
