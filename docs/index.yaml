@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  argo-applications:
+  - apiVersion: v2
+    appVersion: "1.1"
+    created: "2021-06-16T09:50:58.3306283+09:00"
+    description: Deploy ArgoCD Applications with Openshift GitOps
+    digest: 8a547e8cd7fc9909f705dd46c4c9a6d6b4c4cc30b2befc53b5bca9414c0ea010
+    name: argo-applications
+    type: application
+    urls:
+    - https://yakiyoshi.github.io/devenv-helm/argo-applications-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-06-16T09:50:58.3299726+09:00"
