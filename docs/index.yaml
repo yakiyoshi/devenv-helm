@@ -3,9 +3,9 @@ entries:
   argo-applications:
   - apiVersion: v2
     appVersion: "1.1"
-    created: "2021-06-25T13:17:20.5802794+09:00"
+    created: "2021-06-25T13:45:37.3303134+09:00"
     description: Deploy ArgoCD Applications with Openshift GitOps
-    digest: e5f27944404bea5850d1f8c66126afab490789a1c035e3ea74b560853c2dd863
+    digest: 75fac5f55858e76ec6d081f314f956b0f3cb71874a2b5c68b16e8429fc3187d2
     name: argo-applications
     type: application
     urls:
@@ -13,7 +13,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: "1.1"
-    created: "2021-06-25T13:17:20.5800816+09:00"
+    created: "2021-06-25T13:45:37.3298074+09:00"
     description: Deploy ArgoCD Applications with Openshift GitOps
     digest: 157b1c6ea8ca18f1b1ce23cc18ff193a24fc60efbc8a10b1af027f3997a4310e
     name: argo-applications
@@ -23,7 +23,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: "1.1"
-    created: "2021-06-25T13:17:20.5795586+09:00"
+    created: "2021-06-25T13:45:37.3292998+09:00"
     description: Deploy ArgoCD Applications with Openshift GitOps
     digest: b7a5f340c974ceeb5c108bac0ee2eb0514e041d30a107700b10ff12d790528ce
     name: argo-applications
@@ -34,12 +34,22 @@ entries:
   gogl-ci:
   - apiVersion: v2
     appVersion: "0.1"
-    created: "2021-06-25T13:17:20.5806162+09:00"
+    created: "2021-06-25T13:45:37.3321102+09:00"
     description: Deploy CI envionment for Go with openGL
-    digest: 80d4839df913011d8eddd304fa3111d96e0477512a3ae95e2d0fafb1d2c6b834
+    digest: 38ddf0e377a3cb3b57447fc9f182dee15fe9c8448949503e052c6f17bb2294c9
+    name: gogl-ci
+    type: application
+    urls:
+    - https://yakiyoshi.github.io/devenv-helm/gogl-ci-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: "0.1"
+    created: "2021-06-25T13:45:37.3311809+09:00"
+    description: Deploy CI envionment for Go with openGL
+    digest: 9035baf501a63426dca582ec59e7aca720c5e28be9851bb5240094c19f9b569a
     name: gogl-ci
     type: application
     urls:
     - https://yakiyoshi.github.io/devenv-helm/gogl-ci-0.1.0.tgz
     version: 0.1.0
-generated: "2021-06-25T13:17:20.5781032+09:00"
+generated: "2021-06-25T13:45:37.3282871+09:00"

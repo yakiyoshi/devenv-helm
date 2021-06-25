@@ -20,16 +20,20 @@ spec:
   params:
   - name: IMAGE
     description: Name (reference) of the image to build.
+    type: string
   - name: CONTEXT
     description: The build context used by Kaniko.
     default: ./
+    type: string
   - name: EXTRA_ARGS
     type: array
     default: []
   - name: BUILDER_IMAGE
     description: The image on which builds will run (default is v1.5.1)
     default: gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5
+    type: string
   - name: BUILD_SOURCE_IMAGE
+    type: string
     default: quay.io/yakiyoshi/jupyter-remote-desktop-proxy:0.0.3
   - name: appdirectory
     type: string
@@ -51,7 +55,8 @@ spec:
     description: Digest of the image just built.
   steps:
   - name: create-dockercfg
-    workingdir: $(workspaces.dockerconfig.path)
+    workingDir: $(workspaces.dockerconfig.path)
+    resources: {}
     image: registry.redhat.io/ubi8:latest
     script: |
       #!/bin/bash
@@ -69,7 +74,8 @@ spec:
       EOF
       cat config.json
   - name: create-dockerfile
-    workingdir: $(workspaces.source.path)
+    workingDir: $(workspaces.source.path)
+    resources: {}
     image: registry.redhat.io/ubi8:latest
     script: |
       #!/bin/bash
@@ -82,6 +88,7 @@ spec:
       cat Dockerfile
   - name: build-and-push
     workingDir: $(workspaces.source.path)
+    resources: {}
     image: $(params.BUILDER_IMAGE)
     args:
     - $(params.EXTRA_ARGS[*])
@@ -96,6 +103,7 @@ spec:
       runAsUser: 0
   - name: write-digest
     workingDir: $(workspaces.source.path)
+    resources: {}
     image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.16.2
     # output of imagedigestexport [{"key":"digest","value":"sha256:eed29..660","resourceRef":{"name":"myrepo/myimage"}}]
     command: ["/ko-app/imagedigestexporter"]
@@ -106,6 +114,7 @@ spec:
       runAsUser: 0
   - name: digest-to-results
     workingDir: $(workspaces.source.path)
+    resources: {}
     image: docker.io/stedolan/jq@sha256:a61ed0bca213081b64be94c5e1b402ea58bc549f457c2682a86704dd55231e09
     script: |
       cat $(params.CONTEXT)/image-digested | jq '.[0].value' -rj | tee /tekton/results/IMAGE-DIGEST

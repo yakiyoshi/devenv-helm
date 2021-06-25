@@ -14,7 +14,8 @@ spec:
     default: quay.io/yakiyoshi/gogl:0.0.2
   steps:
   - name: gogl-build
-    workingdir: $(workspaces.application.path)
+    workingDir: $(workspaces.application.path)
+    resources: {}
     image: $(params.appbuildimage)
     script: |
       #!/bin/bash
