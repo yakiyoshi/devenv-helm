@@ -31,5 +31,5 @@ spec:
         value: $(workspaces.modules.path)
   workspaces:
   - name: application
-    mountPath: 
+    mountPath: /application
   - name: modules
