@@ -1,0 +1,23 @@
+project:
+  # Specify OpenShift User
+  users:
+    - user01
+
+application:
+  name: application
+  # Specify diretory stored application code in repogitory
+  subdirectory: ./
+  phrase: "1234567"
+
+staticanalysis:
+  enabled: true
+
+appbuild:
+  buildimage: quay.io/yakiyoshi/gogl:0.0.2
+
+imagebuild:
+  baseimage: quay.io/yakiyoshi/jupyter-remote-desktop-proxy:0.0.3
+
+deploy:
+  gpu: false
+

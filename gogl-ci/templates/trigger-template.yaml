@@ -1,0 +1,71 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: {{ .Release.Name }}-build-and-deploy
+spec:
+  params:
+  - name: application-name
+  - name: remotedesktop-port
+  - name: git-url
+    description: url of the git repo for the code of deployment
+  - name: git-revision
+    description: revision to be used from repo of the code for deployment
+    default: "pipelines-1.4"
+  - name: appdirectory
+    description: applicaion directory
+    default: "."
+  - name: appbuildimage
+    default: quay.io/yakiyoshi/gogl:0.0.2
+  - name: appmodule
+  - name: kaniko-dest-image
+    description: Name (reference) of the image to build.
+  - name: kaniko-context
+    description: The build context used by Kaniko.
+    default: ./
+  - name: kaniko-image
+    description: The image on which builds will run (default is v1.5.1)
+    default: gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5
+  - name: kaniko-build-source-image
+    default: quay.io/yakiyoshi/jupyter-remote-desktop-proxy:0.0.3
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: {{ .Release.Name }}-build-and-deploy-run-
+    spec:
+      pipelineRef:
+        name: {{ .Release.Name }}-build-and-deploy
+      params:
+      - name: application-name
+        value: $(tt.params.application-name)
+      - name: remotedesktop-port
+        value: $(tt.params.remotedesktop-port)
+      - name: git-url
+        value: $(tt.params.git-url)
+      - name: git-revision
+        value: $(tt.params.git-revision)
+      - name: appdirectory
+        value: $(tt.params.appdirectory)
+      - name: appbuildimage
+        value: $(tt.params.appbuildimage)
+      - name: kaniko-dest-image
+        value: $(tt.params.kaniko-dest-image)
+      - name: kaniko-context
+        value: $(tt.params.kaniko-context)
+      - name: kaniko-image
+        value: $(tt.params.kaniko-image)
+      - name: kaniko-build-source-image
+        value: $(tt.params.kaniko-build-source-image)
+      workspaces:
+        - name: shared-workspace
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              storageClassName: gp2
+              resources:
+                requests:
+                  storage: 1Gi
+        - name: go-module
+          persistentVolumeClaim:
+            claimName: $(tt.params.appmodule)

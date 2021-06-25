@@ -1,0 +1,6 @@
+apiVersion: v2
+name: gogl-ci
+description: Deploy CI envionment for Go with openGL
+type: application
+version: 0.1.0
+appVersion: "0.1"

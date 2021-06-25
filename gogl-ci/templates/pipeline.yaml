@@ -1,0 +1,126 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: {{ .Release.Name }}-build-and-deploy
+spec:
+  workspaces:
+  - name: shared-workspace
+  - name: go-module
+  params:
+  - name: application-name
+    type: string
+  - name: remotedesktop-port
+    type: string
+  - name: git-url
+    type: string
+    description: url of the git repo for the code of deployment
+  - name: git-revision
+    type: string
+    description: revision to be used from repo of the code for deployment
+    default: "pipelines-1.4"
+  - name: appdirectory
+    type: string
+    description: applicaion directory
+    default: "."
+  - name: appbuildimage
+    type: string
+    description: 
+    default: quay.io/yakiyoshi/gogl:0.0.2
+  - name: kaniko-dest-image
+    type: string
+    description: Name (reference) of the image to build.
+  - name: kaniko-context
+    type: string
+    description: The build context used by Kaniko.
+    default: ./
+  - name: kaniko-image
+    type: string
+    description: The image on which builds will run (default is v1.5.1)
+    default: gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5
+  - name: kaniko-build-source-image
+    default: quay.io/yakiyoshi/jupyter-remote-desktop-proxy:0.0.3
+  tasks:
+  - name: fetch-app-repository
+    taskRef:
+      name: git-clone
+      kind: ClusterTask
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    params:
+    - name: url
+      value: $(params.git-url)
+    - name: subdirectory
+      value: ""
+    - name: deleteExisting
+      value: "true"
+    - name: revision
+      value: $(params.git-revision)
+  {{- if .Values.staticanalysis.enabled }}
+  - name: static-code-analysis
+    taskRef:
+      name: {{ .Release.Name }}-echo
+    params:
+    - name: message
+      value: "stating static code analysis"
+    runAfter:
+    - fetch-app-repository
+  {{- end }}
+  - name: build-app
+    taskRef:
+      name: {{ .Release.Name }}-gogl-build
+    params:
+    - name: appdirectory
+      value: $(params.appdirectory)
+    - name: appbuildimage
+      value: $(params.appbuildimage)
+    workspaces:
+    - name: application
+      workspace: shared-workspace
+    - name: modules
+      workspace: go-module
+    runAfter:
+    {{- if .Values.staticanalysis.enabled }}
+    - static-code-analysis
+    {{- else }}
+    - fetch-app-repository
+    {{- end }}
+  - name: build-image-push
+    taskRef:
+      name: {{ .Release.Name }}-kaniko-clientlessremotedesktop
+    params:
+    - name: IMAGE
+      value: $(params.kaniko-dest-image)
+    - name: CONTEXT
+      value: $(params.kaniko-context)
+    - name: EXTRA_ARGS
+      value:
+        - --skip-tls-verify
+    - name: BUILDER_IMAGE
+      value: $(params.kaniko-image)
+    - name: BUILD_SOURCE_IMAGE
+      value: $(params.kaniko-build-source-image)
+    - name: appdirectory
+      value: $(params.appdirectory)
+    runAfter:
+    - build-app
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+  - name: deploy
+    taskRef:
+      name: {{ .Release.Name }}-deploy
+    params:
+    - name: name
+      value: $(params.application-name)
+    - name: image
+      value: $(params.kaniko-dest-image)
+    - name: digest
+      value: $(tasks.build-image-push.results.IMAGE-DIGEST)
+    - name: port
+      value: $(params.remotedesktop-port)
+    - name: branch-name
+      value: $(params.git-revision)
+    runAfter:
+    - build-image-push
+

@@ -1,0 +1,12 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: el-{{ .Release.Name }}-build-and-deploy
+spec:
+  port:
+    targetPort: http-listener
+  to:
+    kind: Service
+    name: el-{{ .Release.Name }}-build-and-deploy
+    weight: 100
+  wildcardPolicy: None

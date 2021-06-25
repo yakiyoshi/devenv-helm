@@ -14,10 +14,11 @@ spec:
   project: default
   source:
     helm:
+      releaseName: {{ $project.name }}
       valueFiles:
       - values.yaml
-    path: {{ $project.name }}
-    repoURL: {{ $.Values.repoURL }}
+    path: {{ $project.path }}
+    repoURL: {{ $project.repoURL }}
     targetRevision: main
   syncPolicy:
     automated:

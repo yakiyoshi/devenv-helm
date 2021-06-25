@@ -1,0 +1,19 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: {{ .Release.Name }}-build-and-deploy
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - name: github-listener
+      interceptors:
+        - github:
+            secretRef:
+              secretName: {{ .Release.Name }}-github-secret
+              secretKey: secretToken
+            eventTypes:
+              - push
+      bindings:
+        - ref: {{ .Release.Name }}-build-and-deploy
+      template:
+        ref: {{ .Release.Name }}-build-and-deploy

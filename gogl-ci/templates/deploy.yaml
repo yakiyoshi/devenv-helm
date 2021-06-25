@@ -1,0 +1,90 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: {{ .Release.Name }}-deploy
+spec:
+  params:
+  - name: name
+    type: string
+  - name: image
+    type: string
+  - name: digest
+    type: string
+  - name: port
+    type: string
+  - name: branch-name
+    type: string
+  steps:
+  - name: deploy
+    image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+    script: |
+      #!/bin/bash
+      set -exu -o pipefail
+
+      cat <<EOF | oc apply -f -
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: $(params.name)-${BRANCH_NAME##*/}
+        labels:
+          name: $(params.name)-${BRANCH_NAME##*/}
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            name: $(params.name)-${BRANCH_NAME##*/}
+        template:
+          metadata:
+            labels:
+              name: $(params.name)-${BRANCH_NAME##*/}
+          spec:
+            containers:
+              - name: $(params.name)
+                image: $(params.image)@$(params.digest)
+                imagePullPolicy: IfNotPresent
+                ports:
+                  - name: http
+                    containerPort: $(params.port)
+                    protocol: TCP
+                {{- if eq .Values.deploy.gpu true }}
+                resources:
+                  limits:
+                    nvidia.com/gpu: 1
+                {{- end }}
+      ---
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: $(params.name)-${BRANCH_NAME##*/}
+        labels:
+          name: $(params.name)-${BRANCH_NAME##*/}
+      spec:
+        type: ClusterIP
+        ports:
+          - port: $(params.port)
+            targetPort: http
+            protocol: TCP
+            name: http
+        selector:
+          name: $(params.name)-${BRANCH_NAME##*/}
+      ---
+      apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: $(params.name)-${BRANCH_NAME##*/}
+        labels:
+          name: $(params.name)-${BRANCH_NAME##*/}
+      spec:
+        port:
+          targetPort: $(params.port)
+        tls:
+          termination: edge
+        to:
+          kind: Service
+          name: $(params.name)-${BRANCH_NAME##*/}
+          weight: 100
+        wildcardPolicy: None
+      EOF
+    env:
+      - name: BRANCH_NAME
+        value: $(params.branch-name)

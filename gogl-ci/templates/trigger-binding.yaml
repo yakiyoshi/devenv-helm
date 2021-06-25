@@ -1,0 +1,28 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: {{ .Release.Name }}-build-and-deploy
+spec:
+  params:
+  - name: application-name
+    value: {{ .Values.application.name }}
+  - name: remotedesktop-port
+    value: "8888"
+  - name: git-url
+    value: $(body.repository.html_url)
+  - name: git-revision
+    value: $(body.ref)
+  - name: appdirectory
+    value: {{ .Values.application.subdirectory }}
+  - name: appbuildimage
+    value: {{ .Values.appbuild.buildimage }}
+  - name: appmodule
+    value: {{ .Release.Name }}-app-dependencies
+  - name: kaniko-dest-image
+    value: image-registry.openshift-image-registry.svc:5000/{{ .Release.Name }}/{{ .Values.application.name }}
+  - name: kaniko-context
+    value: ./
+  - name: kaniko-image
+    value: gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5
+  - name: kaniko-build-source-image
+    value: {{ .Values.imagebuild.baseimage }}
