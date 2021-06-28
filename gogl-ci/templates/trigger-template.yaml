@@ -65,7 +65,7 @@ spec:
               storageClassName: gp2
               resources:
                 requests:
-                  storage: 1Gi
+                  storage: 5Gi
         - name: go-module
           persistentVolumeClaim:
             claimName: $(tt.params.appmodule)
