@@ -24,7 +24,7 @@ seLinuxContext:
 supplementalGroups:
   type: MustRunAs
 users:
-{{- range $i, $project := .Values.project -}}
+{{- range $i, $project := .Values.project }}
 - system:serviceaccount:{{ $project.name }}:clientlessdesktop
 {{- end }}
 volumes:
