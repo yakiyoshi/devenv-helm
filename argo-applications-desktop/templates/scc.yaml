@@ -1,0 +1,36 @@
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: clientlessdesktop
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: true
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: true
+allowedCapabilities: null
+defaultAddCapabilities: null
+fsGroup:
+  type: MustRunAs
+groups: []
+priority: null
+readOnlyRootFilesystem: false
+requiredDropCapabilities: null
+runAsUser:
+  type: MustRunAs
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: MustRunAs
+users:
+{{- range $i, $project := .Values.project -}}
+- system:serviceaccount:{{ $project.name }}:clientlessdesktop
+{{- end }}
+volumes:
+- "configMap"
+- "downwardAPI"
+- "emptyDir"
+- "persistentVolumeClaim"
+- "projected"
+- "secret"
