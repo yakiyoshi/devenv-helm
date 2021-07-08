@@ -33,9 +33,9 @@ spec:
         selector:
           matchLabels:
             name: $(params.name)-${BRANCH_NAME##*/}
-          strategy:
-            type: Recreate
-          template:
+        strategy:
+          type: Recreate
+        template:
           metadata:
             labels:
               name: $(params.name)-${BRANCH_NAME##*/}
