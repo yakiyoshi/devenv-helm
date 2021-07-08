@@ -1,0 +1,6 @@
+apiVersion: v2
+name: argo-applications-desktop
+description: Deploy ArgoCD Applications with Openshift GitOps
+type: application
+version: 0.3.0
+appVersion: "0.1"

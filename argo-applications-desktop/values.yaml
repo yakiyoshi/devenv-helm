@@ -1,0 +1,7 @@
+project:
+  - name: test1
+    repoURL: https://hogehoge.com/xxx/yyyyy
+    path:  test1
+  - name: test2
+    repoURL: https://fugafuga.com/xxx/yyyyy
+    path:  test2

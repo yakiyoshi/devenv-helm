@@ -3,4 +3,4 @@ name: gogl-ci
 description: Deploy CI envionment for Go with openGL
 type: application
 version: 0.4.0
-appVersion: "0.1"
+appVersion: "0.2"

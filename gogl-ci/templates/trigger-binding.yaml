@@ -7,7 +7,7 @@ spec:
   - name: application-name
     value: {{ .Values.application.name }}
   - name: remotedesktop-port
-    value: "8888"
+    value: "8081"
   - name: git-url
     value: $(body.repository.html_url)
   - name: git-revision

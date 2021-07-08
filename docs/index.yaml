@@ -3,9 +3,9 @@ entries:
   argo-applications:
   - apiVersion: v2
     appVersion: "1.1"
-    created: "2021-06-28T11:11:12.1376863+09:00"
+    created: "2021-07-08T14:34:19.131907+09:00"
     description: Deploy ArgoCD Applications with Openshift GitOps
-    digest: 2ed776528d8c49c231057e766cad3c486545b7554de7823e7cd8d9cffa563d1f
+    digest: eddbeccc60cc77186a845497a73abc55cce0384c826ffeb52c3ba147abb69a3d
     name: argo-applications
     type: application
     urls:
@@ -13,7 +13,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: "1.1"
-    created: "2021-06-28T11:11:12.1375224+09:00"
+    created: "2021-07-08T14:34:19.1313418+09:00"
     description: Deploy ArgoCD Applications with Openshift GitOps
     digest: 157b1c6ea8ca18f1b1ce23cc18ff193a24fc60efbc8a10b1af027f3997a4310e
     name: argo-applications
@@ -23,7 +23,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: "1.1"
-    created: "2021-06-28T11:11:12.1369191+09:00"
+    created: "2021-07-08T14:34:19.1287747+09:00"
     description: Deploy ArgoCD Applications with Openshift GitOps
     digest: b7a5f340c974ceeb5c108bac0ee2eb0514e041d30a107700b10ff12d790528ce
     name: argo-applications
@@ -31,12 +31,23 @@ entries:
     urls:
     - https://yakiyoshi.github.io/devenv-helm/argo-applications-0.1.0.tgz
     version: 0.1.0
-  gogl-ci:
+  argo-applications-desktop:
   - apiVersion: v2
     appVersion: "0.1"
-    created: "2021-06-28T11:11:12.144398+09:00"
+    created: "2021-07-08T14:34:19.1324862+09:00"
+    description: Deploy ArgoCD Applications with Openshift GitOps
+    digest: 5bd58b05d6f6fc37c8610bd7124c85d47e430c5ffd1a1ac8aee5fa941009d195
+    name: argo-applications-desktop
+    type: application
+    urls:
+    - https://yakiyoshi.github.io/devenv-helm/argo-applications-desktop-0.3.0.tgz
+    version: 0.3.0
+  gogl-ci:
+  - apiVersion: v2
+    appVersion: "0.2"
+    created: "2021-07-08T14:34:19.1450643+09:00"
     description: Deploy CI envionment for Go with openGL
-    digest: ed8759b282f05e674188f1b7ae83d5d3a1a6b0eb973a43b62c33767368cffced
+    digest: 9e674b01de474e7d58d5fa615668e8cbcfbe5292d7ef4031c380c684b8a0a6ff
     name: gogl-ci
     type: application
     urls:
@@ -44,7 +55,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: "0.1"
-    created: "2021-06-28T11:11:12.1440603+09:00"
+    created: "2021-07-08T14:34:19.1441476+09:00"
     description: Deploy CI envionment for Go with openGL
     digest: 67d5bc2584adae3a133f4166dba3392dce798b99cb80f15f2f3c1322d3c8bb08
     name: gogl-ci
@@ -54,7 +65,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: "0.1"
-    created: "2021-06-28T11:11:12.1425756+09:00"
+    created: "2021-07-08T14:34:19.1402262+09:00"
     description: Deploy CI envionment for Go with openGL
     digest: 38ddf0e377a3cb3b57447fc9f182dee15fe9c8448949503e052c6f17bb2294c9
     name: gogl-ci
@@ -64,7 +75,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: "0.1"
-    created: "2021-06-28T11:11:12.1399695+09:00"
+    created: "2021-07-08T14:34:19.1365985+09:00"
     description: Deploy CI envionment for Go with openGL
     digest: 9035baf501a63426dca582ec59e7aca720c5e28be9851bb5240094c19f9b569a
     name: gogl-ci
@@ -72,4 +83,4 @@ entries:
     urls:
     - https://yakiyoshi.github.io/devenv-helm/gogl-ci-0.1.0.tgz
     version: 0.1.0
-generated: "2021-06-28T11:11:12.1358133+09:00"
+generated: "2021-07-08T14:34:19.1262569+09:00"
