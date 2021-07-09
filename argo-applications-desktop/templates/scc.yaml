@@ -4,7 +4,7 @@ metadata:
   name: clientlessdesktop
 allowHostDirVolumePlugin: false
 allowHostIPC: false
-allowHostNetwork: true
+allowHostNetwork: false
 allowHostPID: false
 allowHostPorts: false
 allowPrivilegeEscalation: true
@@ -12,17 +12,18 @@ allowPrivilegedContainer: true
 allowedCapabilities: null
 defaultAddCapabilities: null
 fsGroup:
-  type: MustRunAs
+  type: RunAsAny
 groups: []
 priority: null
 readOnlyRootFilesystem: false
-requiredDropCapabilities: null
+requiredDropCapabilities:
+- MKNOD
 runAsUser:
-  type: MustRunAs
+  type: RunAsAny
 seLinuxContext:
   type: MustRunAs
 supplementalGroups:
-  type: MustRunAs
+  type: RunAsAny
 users:
 {{- range $i, $project := .Values.project }}
 - system:serviceaccount:{{ $project.name }}:clientlessdesktop
